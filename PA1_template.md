@@ -1,11 +1,6 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-author: "Paul Duff"
-date: "February 14, 2016"
-output: 
-  html_document: 
-    keep_md: yes
----
+# Reproducible Research: Peer Assessment 1
+Paul Duff  
+February 14, 2016  
 
 ## Introduction:
 
@@ -32,10 +27,42 @@ The dataset is stored in a comma-separated-value (CSV) file and there are a tota
 Assignment instructions can be found in the README.md file located in the repository as this document.
 
 ### Load librarys needed used during assignment code
-```{r}
+
+```r
 ## apply packages
 library(dplyr)
+```
+
+```
+## Warning: package 'dplyr' was built under R version 3.2.3
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
 library(lubridate)
+```
+
+```
+## Warning: package 'lubridate' was built under R version 3.2.3
+```
+
+```r
 library(lattice)
 ```
 
@@ -43,7 +70,8 @@ library(lattice)
 ## Loading and preprocessing the data
 
 ### 1. Loading the data
-```{r}
+
+```r
 ## read data
 actdata <- read.csv("activity.csv")
 ```
@@ -62,7 +90,8 @@ Data frame created using dplyr package functionality which contains
 the total number of steps for each day in the source data file.  
 As NA values were ignored in processing, there there will be NA values in the output
 
-```{r}
+
+```r
 ## calculate total number of steps taken per day
 ## use dplyr package
 totsteps <- filter(summarise(group_by(actdata, date), sum(steps)))
@@ -73,7 +102,8 @@ names(totsteps) <- c("date", "TotalSteps")
 ### 2. Make a Histogram of the Total Number of Steps Taken Each Day 
 
 Histogram created using the R base plotting package with a suitable setting for breaks selected.
-```{r}
+
+```r
 ## Plot Histogram of total number of steps take per day
 ## R base plotting system hist() selected with breaks set to 30
 hist(totsteps$TotalSteps,
@@ -82,22 +112,34 @@ hist(totsteps$TotalSteps,
      main = "Histogram of Total Number of Steps Taken Each Day") #set title
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)
+
 ### Calculate and Report the Mean and Median of the Total Number of Steps Taken per Day
 In order to calculate the mean and median values NA (missing) values in step counts have been removed from the calculation (using na.rm=TRUE).
 
 #### Mean:
 
-```{r}
+
+```r
 ## Calculate the mean total number of steps taken
 mean_tot_steps <- mean(totsteps$TotalSteps, na.rm=TRUE)
 print(mean_tot_steps)
 ```
+
+```
+## [1] 10766.19
+```
 #### Median:
 
-```{r}
+
+```r
 ## Calculate the median total number of steps taken
 med_tot_steps <- median(totsteps$TotalSteps, na.rm=TRUE)
 print(med_tot_steps)
+```
+
+```
+## [1] 10765
 ```
 ## What is the Average Daily Activity Pattern?
 
@@ -106,7 +148,8 @@ print(med_tot_steps)
 First calculate the average number of steps per 5 minute interval across all days
 NA values ignored from the average calculatoin using na.rm=TRUE.
 
-```{r}
+
+```r
 ## calculate average number of steps taken per 5 minute interval
 ## averaged across all days.
 ## dplyr package used for calculation and grouping of data
@@ -119,25 +162,34 @@ names(avsteps) <- c("interval", "meansteps")
 Plot the data as time series plot of average number of steps taken averaged across all days (y-axis) for each 5-minute interval (x-axis).  
 R base plotting package chosen using a line plot.
 
-```{r}
+
+```r
 plot(avsteps,                                           #dataset
      type="l",                                          #graph type (line)
      xlab="5-Minute Interval",                          #set x axis label
      ylab="Average Number of Steps (across all days)",  #set y axis label
      main="Average Number of Steps per Interval (averaged across all days)") #set title
-
-
-
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-8-1.png)
 
 ### 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
-```{r}
+
+```r
 ## cacluate the maximum number of steps
 max_steps <- avsteps[avsteps$meansteps == max(avsteps$meansteps),]
 
 #Interval with the maximum average number of steps and the number of steps for it.
 print(max_steps)
+```
+
+```
+## Source: local data frame [1 x 2]
+## 
+##   interval meansteps
+##      (int)     (dbl)
+## 1      835  206.1698
 ```
 
 5 Minute Interval containing Max Number of Steps (on average): 835
@@ -148,7 +200,8 @@ Assignment Instructions highlight:
 
 ### 1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 
-```{r}
+
+```r
 ## total number of missing values in the dataset (total rows with "NA"s)
 ## first create a boolean representation of NA fields
 NAbool <- is.na(actdata)
@@ -158,6 +211,14 @@ NAdata <- actdata[NAbool,]
 
 ##print out total number of rows with NA values
 print(count(NAdata))
+```
+
+```
+## Source: local data frame [1 x 1]
+## 
+##       n
+##   (int)
+## 1  2304
 ```
 
 Total number of rows with NAs: 2304
@@ -172,7 +233,8 @@ The chosen strategy is to use the average value for that interval taken across a
 
 Dataset created using the strategy outlined above.
 
-```{r}
+
+```r
 # add average steps for the interval values to the dataset for each row in the
 # column meansteps
 mactdata <- merge(x=actdata, y=avsteps)
@@ -191,7 +253,8 @@ actdata2 <- select(actdata2, steps, date, interval)
 Make a historgram of the total number of steps taken each day.  R base plotting system chosen using the same approach and settings as for the histogram created for the first part of this assignment.
 
 First step is to re-calculate the total number of steps for each day for the new data set with the NA values replaced.  
-```{r}
+
+```r
 ## re-calculate total number of steps taken per day with the new data
 ## use dplyr package
 totsteps2 <- filter(summarise(group_by(actdata2, date), sum(steps)))
@@ -202,7 +265,8 @@ names(totsteps2) <- c("date", "TotalSteps")
 
 #### Plot the histogram of total number of steps each day using the new dataset
 
-```{r}
+
+```r
 ## Plot Histogram of total number of steps take per day
 ## R base plotting system hist() selected with breaks set to 30
 hist(totsteps2$TotalSteps,
@@ -212,24 +276,36 @@ hist(totsteps2$TotalSteps,
      ylim=c(0,20))           #set y-axis range to make plot clearer      
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-13-1.png)
+
 #### Calculate and report the mean and median total number of steps taken per dayfor the new data set.
 
 #### Mean:
 
-```{r}
+
+```r
 ## Calculate the mean total number of steps taken with the new data
 ## that has NAs replaced with average values for the interval
 mean_tot_steps2 <- mean(totsteps2$TotalSteps, na.rm=TRUE)
 print(mean_tot_steps2)
 ```
 
+```
+## [1] 10766.19
+```
+
 #### Median:
 
-```{r}
+
+```r
 ## Calculate the median total number of steps taken with the new data
 ## which has NAs replaced with average values for the interval
 med_tot_steps2 <- median(totsteps2$TotalSteps, na.rm=TRUE)
 print(med_tot_steps2)
+```
+
+```
+## [1] 10766.19
 ```
 
 #### Do these values differ from the estimates from the first part of the assignment? 
@@ -247,7 +323,8 @@ For convenience of functionality it was decided to use the lubridate wday() in p
 
 ### 1. Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
-```{r}
+
+```r
 ## use dplyr mutate to add a new column to the dataset with NAs replaced
 ## daytype set to "weekday" for mon to fri and "weekend" for sat and sun
 ## calculated using the lubridate wday() function where 1 & 7 equate to sun & sat
@@ -263,7 +340,8 @@ actdata3$daytype <- as.factor(actdata3$daytype)
 
 For the plot it was first necessary to calculate the average steps taken for each 5-minute interval, averaged across all week days and all weekend days.
 
-```{r}
+
+```r
 ## calculate average number of steps taken per 5 minute interval
 ## averaged across all weekdays and all weekend days.
 ## dplyr package used for calculation and grouping of data
@@ -275,7 +353,8 @@ names(avsteps2) <- c("daytype", "interval", "meansteps")
 
 The Lattice plotting package was selected for the plot, as this was used for the example plot referred to in the assignment instruction text.
 
-```{r}
+
+```r
 ## panel plot containing time series plot of the 5-minute interval (x-axis)
 ## and the average number of steps taken, averaged across weekday days or 
 ## weekend days (y-axis).
@@ -288,5 +367,7 @@ plot3 <-xyplot(meansteps~interval|daytype,     #set data for x and y axis and fa
        main="Number of Steps per 5-minute Interval\n (averaged across all weekdays and weekends)")  #set title
  print(plot3)
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-18-1.png)
 
 
