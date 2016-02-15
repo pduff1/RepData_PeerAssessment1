@@ -239,7 +239,7 @@ actdata2 &lt;- select(actdata2, steps, date, interval)</code></pre>
 ## use dplyr package
 totsteps2 &lt;- filter(summarise(group_by(actdata2, date), sum(steps)))
 
-##set names of columns for totsteps for easier processing in subsequent steps
+##set names of columns for totsteps2 for easier processing in subsequent steps
 names(totsteps2) &lt;- c(&quot;date&quot;, &quot;TotalSteps&quot;)</code></pre>
 <div id="plot-the-histogram-of-total-number-of-steps-each-day-using-the-new-dataset" class="section level4">
 <h4>Plot the histogram of total number of steps each day using the new dataset</h4>
@@ -281,8 +281,8 @@ print(med_tot_steps2)</code></pre>
 </div>
 </div>
 </div>
-<div id="are-there-differences-in-activity-patterns-between-weeekdays-and-weekends" class="section level2">
-<h2>Are There Differences in Activity Patterns Between Weeekdays and Weekends</h2>
+<div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level2">
+<h2>Are There Differences in Activity Patterns Between Weekdays and Weekends</h2>
 <p>Assignment instructions notes: <em>“For this part the weekdays() function may be of some help here. Use the dataset with the filled-in missing values for this part.”</em><br />For convenience of functionality it was decided to use the lubridate wday() in preference to weekdays(), as this makes it easy to identify the weekday and weekend dates based on the default numeric weekday value returned (1-7) where 1 is sunday and 7 is saturday.</p>
 <div id="create-a-new-factor-variable-in-the-dataset-with-two-levels---weekday-and-weekend-indicating-whether-a-given-date-is-a-weekday-or-weekend-day." class="section level3">
 <h3>1. Create a new factor variable in the dataset with two levels - “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.</h3>

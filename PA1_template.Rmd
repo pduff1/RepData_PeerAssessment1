@@ -196,7 +196,7 @@ First step is to re-calculate the total number of steps for each day for the new
 ## use dplyr package
 totsteps2 <- filter(summarise(group_by(actdata2, date), sum(steps)))
 
-##set names of columns for totsteps for easier processing in subsequent steps
+##set names of columns for totsteps2 for easier processing in subsequent steps
 names(totsteps2) <- c("date", "TotalSteps")
 ```
 
@@ -239,7 +239,7 @@ The mean value is the same as for the first part of the assignment (~10766 in bo
 The overall shape of the historgram for the Total Number of Steps Each Day is similar between the datasets without and with the NA values replaced, however with the missing data values replaced there is an increase in frequency of the number of some of the average Total Step values, particularly around the mean value (10766).
 
 
-## Are There Differences in Activity Patterns Between Weeekdays and Weekends
+## Are There Differences in Activity Patterns Between Weekdays and Weekends
 
 Assignment instructions notes:
 *"For this part the weekdays() function may be of some help here. Use the dataset with the filled-in missing values for this part."*  
